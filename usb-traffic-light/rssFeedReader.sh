@@ -39,6 +39,7 @@ while true; do
 	case $state in 
 	    ?) echo "Building "`date`; $COMMAND Y; sleep $TIME; $COMMAND G; sleep $TIME;;
 	    stable) echo "Stable "`date`; $COMMAND G; sleep 5;;
+	    back) echo "Back to stable "`date`; $COMMAND G; sleep 5;;
 	    *) echo "Instable "`date`; $COMMAND R; sleep 5;;
 	esac;
 	
