@@ -16,3 +16,14 @@ REST API:
 RSS Feed:
 
 * Shell Script: usb-traffic-light/rssFeedReader.sh
+
+<h4>Software</h4>
+
+To control the USB device from your commandline, you need the software from Cleware:
+http://www.cleware.net/download.html
+
+For Linux use this link:
+http://www.vanheusden.com/clewarecontrol/
+
+
+<h3>Have fun</h3>
