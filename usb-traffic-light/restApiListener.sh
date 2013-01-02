@@ -24,41 +24,32 @@ JENKINS_SERVER=http://<jenkins>:8080/job/
 JOB_NAME=Extreme%20Feedback%20Device%20Test
 DEVICE_NO=<USB device number>
 
-# Methods for controlling the device
-gOn() {
-  clewarecontrol -c 1 -b -d $DEVICE_NO -as 2 1 2>&1 
+# Methods for controlling the device (2=blue, 1=yellow, 0=red)
+lightOn() {
+  clewarecontrol -c 1 -b -d $DEVICE_NO -as $1 1 2>&1 
 }
-gOff() {
-  clewarecontrol -c 1 -b -d $DEVICE_NO -as 2 0 2>&1 
+lightOff() {
+  clewarecontrol -c 1 -b -d $DEVICE_NO -as $1 0 2>&1 
 }
-yOn() {
-  clewarecontrol -c 1 -b -d $DEVICE_NO -as 1 1 2>&1 
+allOff() {
+  lightOff 0;
+  lightOff 1;
+  lightOff 2;
 }
-yOff() {
-  clewarecontrol -c 1 -b -d $DEVICE_NO -as 1 0 2>&1 
-}
-rOn() {
-  clewarecontrol -c 1 -b -d $DEVICE_NO -as 0 1 2>&1 
-}
-rOff() {
-  clewarecontrol -c 1 -b -d $DEVICE_NO -as 0 0 2>&1 
-}
-
 
 while true; do 
   color=`curl -silent -u $USER:$PASSWORD $JENKINS_SERVER$JOB_NAME/api/json?pretty=true | grep color `
   state=`echo $color | sed 's/\"//g' | sed 's/,//g' | awk '{print $3}'` 
   echo $state;  
   case $state in 
-    red) echo "red"; rOn; yOff; gOff;;
-    yellow) echo "yellow"; rOff; yOn; gOff;;
-    blue) echo "blue"; rOff; yOff; gOn;; 
-    red_anime) echo $state; rOff; yOff; gOff;    sleep 1; rOn; sleep 1; rOff; sleep 1; rOn;;
-    yellow_anime) echo $state; rOff; yOff; gOff; sleep 1; yOn; sleep 1; yOff; sleep 1; yOn;;
-    blue_anime) echo $state; rOff; yOff; gOff;   sleep 1; yOn; sleep 1; yOff; sleep 1; yOn;;
+    red)    echo "State: $state";        allOff; lightOn 0;;
+    yellow) echo "State: $state";        allOff; lightOn 1;;
+    blue)   echo "State: $state";        allOff; lightOn 2;;
+    red_anime)    echo "State: $state";  allOff; sleep 1; lightOn 0; sleep 1; lightOff 0; sleep 1; lightOn 0;;
+    yellow_anime) echo "State: $state";  allOff; sleep 1; lightOn 1; sleep 1; lightOff 1; sleep 1; lightOn 1;;
+    blue_anime)   echo "State: $state";  allOff; sleep 1; lightOn 2; sleep 1; lightOff 2; sleep 1; lightOn 2;;
     *) echo "nothing matched "$state;;  
   esac;
-
   sleep 1;  
 done;
 
