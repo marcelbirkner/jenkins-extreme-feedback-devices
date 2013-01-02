@@ -21,26 +21,28 @@
 # @MarcelBirkner
 # 
 
-cd Cleware4.2.8/
-
 # configure Jenkins Job + User/Password
-URL="http://<jenkins>:8080/view/My%20Jobs/rssLatest"
+JENKINS_URL="http://<jenkins>:8080/view/My%20Jobs/rssLatest"
+JOB_NAME="<job name>"
 CREDENTIALS=user:password
 
-# Configure Script and time interval
-TIME=1
-COMMAND=./USBswitchCmd.exe
+# cofigure script and time interval
+CLEWARE_HOME=Cleware4.2.8
+CLEWARE_COMMAND=./USBswitchCmd.exe
+SLEEP_IN_SEC=1
+
+cd $CLEWARE_HOME
 
 # Loop that checks the Jenkins Job RSS Feed and updates the traffic light state
 while true; do 
 
-	state=`curl -u $CREDENTIALS $URL | sed 's/></>\n</g' | grep "<title>VisionLink-CI" | sed 's/(/ | /g' | sed 's/)/ | /g' | awk '{print $4}'`
+	state=`curl -u $CREDENTIALS $JENKINS_URL | sed 's/></>\n</g' | grep "<title>"$JOB_NAME | sed 's/(/ | /g' | sed 's/)/ | /g' | awk '{print $4}'`
 	
 	case $state in 
-	    ?) echo "Building "`date`; $COMMAND Y; sleep $TIME; $COMMAND G; sleep $TIME;;
-	    stable) echo "Stable "`date`; $COMMAND G; sleep 5;;
-	    back) echo "Back to stable "`date`; $COMMAND G; sleep 5;;
-	    *) echo "Instable "`date`; $COMMAND R; sleep 5;;
+		?)      echo "State: Building    "`date`; $CLEWARE_COMMAND Y; sleep $SLEEP_IN_SEC; $CLEWARE_COMMAND G; sleep $SLEEP_IN_SEC;;
+		stable) echo "State: Stable      "`date`; $CLEWARE_COMMAND G; sleep $SLEEP_IN_SEC;;
+		back)   echo "State: Back        "`date`; $CLEWARE_COMMAND G; sleep $SLEEP_IN_SEC;;
+		*)      echo "State: Instable    "`date`; $CLEWARE_COMMAND R; sleep $SLEEP_IN_SEC;;
 	esac;
 	
 done;
