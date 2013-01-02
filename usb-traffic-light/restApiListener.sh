@@ -42,13 +42,13 @@ while true; do
   state=`echo $color | sed 's/\"//g' | sed 's/,//g' | awk '{print $3}'` 
   echo $state;  
   case $state in 
-    red)    echo "State: $state";        allOff; lightOn 0;;
-    yellow) echo "State: $state";        allOff; lightOn 1;;
-    blue)   echo "State: $state";        allOff; lightOn 2;;
-    red_anime)    echo "State: $state";  allOff; sleep 1; lightOn 0; sleep 1; lightOff 0; sleep 1; lightOn 0;;
-    yellow_anime) echo "State: $state";  allOff; sleep 1; lightOn 1; sleep 1; lightOff 1; sleep 1; lightOn 1;;
-    blue_anime)   echo "State: $state";  allOff; sleep 1; lightOn 2; sleep 1; lightOff 2; sleep 1; lightOn 2;;
-    *) echo "nothing matched "$state;;  
+    red)          echo "State: $state"; allOff; lightOn 0;;
+    yellow)       echo "State: $state"; allOff; lightOn 1;;
+    blue)         echo "State: $state"; allOff; lightOn 2;;
+    red_anime)    echo "State: $state"; allOff; sleep 1; lightOn 0; sleep 1; lightOff 0; sleep 1; lightOn 0;;
+    yellow_anime) echo "State: $state"; allOff; sleep 1; lightOn 1; sleep 1; lightOff 1; sleep 1; lightOn 1;;
+    blue_anime)   echo "State: $state"; allOff; sleep 1; lightOn 2; sleep 1; lightOff 2; sleep 1; lightOn 2;;
+    *)            echo "Nothing matched state: $state";;  
   esac;
   sleep 1;  
 done;
