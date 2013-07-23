@@ -3,6 +3,8 @@
 This repository contains scripts that can be used to control extreme 
 feedback devices for the Jenkins Continuous Integration server.
 
+<img src="http://blog.codecentric.de/files/2013/07/usb-traffic-light.jpg" />
+
 <h3>USB Traffic Light</h3>
 
 There are several script that you can use, depending on the Version of your 
